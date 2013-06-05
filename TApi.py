@@ -59,7 +59,9 @@ class MyTraderApi(TraderApi):
         print(d.TradingDay, d.InstrumentID, d.LastPrice, d.HighestPrice, d.LowestPrice, d.Volume, d.OpenInterest, d.UpdateTime, d.UpdateMillisec, d.AveragePrice)
 
     def OnRspQryOrder(self, pOrder, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryOrder:', pOrder, pRspInfo)
+        #print('OnRspQryOrder:', pOrder, pRspInfo)
+        data = pOrder
+        print('合约：%s|前置：%s|会话：%s|报单参考：%s|交易所：%s|系统报单号：%s' % (data.InstrumentID,data.FrontID,data.SessionID,data.OrderRef,data.ExchangeID,data.OrderSysID))
 
     def OnRspQryTradingAccount(self, pTradingAccount, pRspInfo, nRequestID, bIsLast):
         #print('OnRspQryTradingAccount:', pTradingAccount, pRspInfo)
@@ -203,6 +205,11 @@ class MyTraderApi(TraderApi):
             print '结算单确认成功'
         else:
             '结算单确认错误'
+        
+    def ReqOrderAction(self):
+        self.ReqQryOrder();
+        pass
+        
         
 
 

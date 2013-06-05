@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import hashlib, os, sys, tempfile, time
+import hashlib, os, sys, tempfile, time, ConfigParser
 from ctp import ApiStruct, MdApi, TraderApi
 
 class MyMdApi(MdApi):
@@ -77,18 +77,26 @@ class MyMdApi(MdApi):
 
 #深度行情通知
     def OnRtnDepthMarketData(self, pDepthMarketData):
-        d = pDepthMarketData
-        print('OnRspQryDepthMarketData:')
-        print("合约:%s\n最新价:%.2f\t最高价:%.2f\t最低价:%.2f\t数量:%d\t最后修改时间:%s\n买价:%.2f\t买量:%d\t卖价:%.2f\t卖量:%d" % (d.InstrumentID,d.LastPrice,d.HighestPrice,d.LowestPrice,d.Volume,d.UpdateTime,d.BidPrice1,d.BidVolume1,d.AskPrice1,d.AskVolume1))
+        data = pDepthMarketData
+        #print('OnRspQryDepthMarketData:')
+        print("%s|%.2f|%.2f|%.2f|%d|%s|%.2f|%d|%.2f|%d" % (data.InstrumentID,data.LastPrice,data.HighestPrice,data.LowestPrice,data.Volume,data.UpdateTime,data.BidPrice1,data.BidVolume1,data.AskPrice1,data.AskVolume1))
+        #print("合约:%s\n最新价:%.2f\t最高价:%.2f\t最低价:%.2f\t数量:%d\t最后修改时间:%s\n买价:%.2f\t买量:%d\t卖价:%.2f\t卖量:%d" % (d.InstrumentID,d.LastPrice,d.HighestPrice,d.LowestPrice,d.Volume,d.UpdateTime,d.BidPrice1,d.BidVolume1,d.AskPrice1,d.AskVolume1))
         f = open('mdlog.txt','a')
-        f.write(str(d)+'\n')
+        f.write(str(data)+'\n')
         f.close()
-
-if __name__ == '__main__':
-    mdapi = MyMdApi(b'1007', b'00000581', b'123456', [b'cu1309'])
-    mdapi.RegisterFront(b'tcp://27.115.78.150:26213')
+        
+def mdconnect():
+    config = ConfigParser.ConfigParser()
+    config.readfp(open('./config/config.cfg'))
+    instrument = list()
+    instrument.append(raw_input("请输入合约号:"))
+    print instrument
+    mdapi = MyMdApi(config.get('ACCOUNT', 'BrokerID'), config.get('ACCOUNT', 'UserID'), config.get('ACCOUNT', 'Password'), instrument)
+    mdapi.RegisterFront(config.get('SERVER', 'MServerIP'))
     mdapi.Init()
 
+if __name__ == '__main__':
+    mdconnect()
     try:
         while 1:
             time.sleep(1)
