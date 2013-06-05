@@ -207,7 +207,12 @@ class MyTraderApi(TraderApi):
             '结算单确认错误'
         
     def ReqOrderAction(self):
-        self.ReqQryOrder();
+        ordersysid = raw_input("请输入系统报单号：")
+        req = ApiStruct.Order(BrokerID=self.brokerID,InvestorID=self.userID,UserID=self.userID,OrderSysID=ordersysid,ExchangeID='SHFE')
+        self.requestID += 1
+        answer = TraderApi.ReqOrderAction(self, req, self.requestID)
+        if answer == 0:
+            print "撤单请求发送成功"
         pass
         
         
