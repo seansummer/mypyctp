@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import hashlib, os, sys, tempfile, time, ConfigParser
+import hashlib, os, sys, tempfile, time
 from ctp import ApiStruct, MdApi, TraderApi
 
 class MyTraderApi(TraderApi):
     #初始化交易API
-    def __init__(self, brokerID, userID, password, instrumentIDs):
+    def __init__(self, brokerID, userID, password):
         self.requestID = 0
         self.brokerID = brokerID
         self.userID = userID
         self.password = password
-        self.instrumentIDs = instrumentIDs
+        #self.instrumentIDs = instrumentIDs
         self.Create()
 
     def Create(self):
@@ -99,9 +99,6 @@ class MyTraderApi(TraderApi):
     def OnRspTransferQryDetail(self, pTransferQryDetailRsp, pRspInfo, nRequestID, bIsLast):
         print('OnRspTransferQryDetail:', pTransferQryDetailRsp, pRspInfo)
 
-    def OnRspQryOrder(self, pOrder, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryOrder:', pOrder, pRspInfo)
-
     def OnRspQryTrade(self, pTrade, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryTrade:', pTrade, pRspInfo)
 
@@ -143,9 +140,6 @@ class MyTraderApi(TraderApi):
 
     def OnRtnOrder(self, pOrder):
         print('OnRtnOrder:', pOrder)
-
-    def OnErrRtnOrderInsert(self, pInputOrder, pRspInfo):
-        print('OnErrRtnOrderInsert:', pInputOrder, pRspInfo)
 
     def OnErrRtnOrderAction(self, pOrderAction, pRspInfo):
         print('OnErrRtnOrderAction:', pOrderAction, pRspInfo)
@@ -211,16 +205,10 @@ class MyTraderApi(TraderApi):
             '结算单确认错误'
         
 
-def connect():
-    traderapi = MyTraderApi(b'1007', b'00000581', b'123456', [b'cu1309'])
-    traderapi.SubscribePublicTopic(0)
-    traderapi.SubscribePrivateTopic(0)
-    traderapi.RegisterFront(b'tcp://27.115.78.150:26205')
-    traderapi.Init()
-    return traderapi
+
 
 if __name__ == '__main__':
-    r = main()
+    #r = main()
     try:
         while 1:
             print "ready..."
@@ -228,7 +216,7 @@ if __name__ == '__main__':
             #r.ReqOrderInsert()
             #r.ReqQryTradingAccount()
             #r.ReqQryDepthMarketData(b'cu1309')
-            r.ReqQryInvestorPositionDetail()
+            #r.ReqQryInvestorPositionDetail()
             time.sleep(10)
     except KeyboardInterrupt:
         pass

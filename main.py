@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
-import TApi, MApi, time
+import TApi, MApi, time, ConfigParser
+
+def connect():
+    config = ConfigParser.ConfigParser()
+    config.readfp(open('./config/config.cfg'))
+    traderapi = TApi.MyTraderApi(config.get('ACCOUNT', 'BrokerID'), config.get('ACCOUNT', 'UserID'), config.get('ACCOUNT', 'Password'))
+    traderapi.SubscribePublicTopic(0)
+    traderapi.SubscribePrivateTopic(0)
+    traderapi.RegisterFront(config.get('SERVER', 'TServerIP'))
+    traderapi.Init()
+    return traderapi
 
 def main():
     menu = ['0 结算单确认','1 查询合约行情', '2 查询资金', '3 报单查询','4 成交查询', '5 持仓查询', '6 合约下单']
-    t = TApi.connect()
+    t = connect()
     menucomm = {'0':t.ReqSettlementInfoConfirm,
                 '1':t.ReqQryDepthMarketData,
                 '2':t.ReqQryTradingAccount,
