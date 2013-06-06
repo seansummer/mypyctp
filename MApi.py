@@ -92,13 +92,12 @@ def mdconnect():
     instrument.append(raw_input("请输入合约号:"))
     print instrument
     mdapi = MyMdApi(config.get('ACCOUNT', 'BrokerID'), config.get('ACCOUNT', 'UserID'), config.get('ACCOUNT', 'Password'), instrument)
-    #mdapi = MyMdApi(b'1007',b'00000581',b'123456', ['cu1309'])
     mdapi.RegisterFront(config.get('SERVER', 'MServerIP'))
-    #mdapi.RegisterFront('tcp://27.115.78.150:26213')
     mdapi.Init()
+    return mdapi
 
 if __name__ == '__main__':
-    mdconnect()
+    md = mdconnect()
     try:
         while 1:
             time.sleep(1)
