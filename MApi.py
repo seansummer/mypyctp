@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import hashlib, os, sys, tempfile, time, ConfigParser
-from ctp import ApiStruct, MdApi, TraderApi
-
+from ctp import ApiStruct, MdApi, TraderApi   
+        
 class MyMdApi(MdApi):
 #初始化MyMdApi类
     def __init__(self, brokerID, userID, password, instrumentIDs):
@@ -95,7 +95,8 @@ def mdconnect():
     mdapi.RegisterFront(config.get('SERVER', 'MServerIP'))
     mdapi.Init()
     return mdapi
-
+        
+        
 if __name__ == '__main__':
     md = mdconnect()
     try:

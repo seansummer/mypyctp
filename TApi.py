@@ -208,7 +208,7 @@ class MyTraderApi(TraderApi):
         
     def ReqOrderAction(self):
         ordersysid = raw_input("请输入系统报单号：")
-        req = ApiStruct.Order(BrokerID=self.brokerID,InvestorID=self.userID,UserID=self.userID,OrderSysID=ordersysid,ExchangeID='SHFE')
+        req = ApiStruct.Order(BrokerID=self.brokerID,UserID=self.userID,OrderSysID=ordersysid)
         self.requestID += 1
         answer = TraderApi.ReqOrderAction(self, req, self.requestID)
         if answer == 0:
