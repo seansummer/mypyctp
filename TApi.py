@@ -2,6 +2,7 @@
 
 import hashlib, os, sys, tempfile, time
 from ctp import ApiStruct, MdApi, TraderApi
+from xml.etree import ElementTree as ET
 
 class MyTraderApi(TraderApi):
     #初始化交易API
@@ -15,6 +16,14 @@ class MyTraderApi(TraderApi):
 
     def Create(self):
         TraderApi.Create(self)
+        
+    def FindErrors(self, value):
+        tree = ET.parse('error.xml')
+        root = tree.getroot()
+        p = root.findall("error")
+        for o in p:
+            if o.attrib['value'] == str(value):
+                print o.attrib['prompt']
 
     def RegisterFront(self, front):
         if isinstance(front, bytes):
@@ -103,6 +112,7 @@ class MyTraderApi(TraderApi):
 
     def OnRspQryTrade(self, pTrade, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryTrade:', pTrade, pRspInfo)
+        self.FindErrors(pRspInfo.ErrorID)
 
     def OnRspQryInvestor(self, pInvestor, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryInvestor:', pInvestor, pRspInfo)
@@ -120,7 +130,7 @@ class MyTraderApi(TraderApi):
         d = pDepthMarketData
         print('OnRspQryDepthMarketData:')
         print("合约:%s\n最新价:%.2f\n最高价:%.2f\n最低价:%.2f\n数量:%d\n最后修改时间:%s\n买价:%.2f\n买量:%d\n卖价:%.2f\n卖量:%d" % (d.InstrumentID,d.LastPrice,d.HighestPrice,d.LowestPrice,d.Volume,d.UpdateTime,d.BidPrice1,d.BidVolume1,d.AskPrice1,d.AskVolume1))
-
+        self.FindErrors(pRspInfo.ErrorID)
 
     def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequset, bIsLast):
         print('OnRspQrySettlementInfo:', pSettlementInfo, pRspInfo)
