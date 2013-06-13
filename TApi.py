@@ -11,7 +11,7 @@ class MyTraderApi(TraderApi):
         self.brokerID = brokerID
         self.userID = userID
         self.password = password
-        #self.instrumentIDs = instrumentIDs
+        self.instrumentIDs = 'cu1309'
         self.Create()
 
     def Create(self):
@@ -139,13 +139,13 @@ class MyTraderApi(TraderApi):
         print('OnRspQryTransferBank:', pTransferBank, pRspInfo)
 
     def OnRspQryInvestorPositionDetail(self, pInvestorPositionDetail, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryInvestorPositionDetail',pInvestorPositionDetail, self.FindErrors(pRspInfo.ErrorID))
+        print('OnRspQryInvestorPositionDetail',pInvestorPositionDetail, pRspInfo)
 
     def OnRspQryNotice(self, pNotice, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryNotice:', pNotice, pRspInfo)
 
     def OnRspQryInstrument(self, pInstrument, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryInstrument:', pInstrument, self.FindErrors(pRspInfo.ErrorID))
+        print('OnRspQryInstrument:', pInstrument, pRspInfo)
 
     def OnRtnTrade(self, pTrade):
         print('OnRtnTrade:', pTrade)
@@ -218,8 +218,8 @@ class MyTraderApi(TraderApi):
         
     def ReqOrderAction(self):
         ordersysid = raw_input("请输入系统报单号：")
-        req = ApiStruct.OrderAction(InstrumentID='cu1309', BrokerID=self.brokerID, InvestorID=self.userID, ActionFlag=b'0', FrontID=1, SessionID=865534192, OrderRef='1')
-        print req
+        #req = ApiStruct.OrderAction(InstrumentID=self.instrumentIDs, BrokerID=self.brokerID, InvestorID=self.userID, ActionFlag=b'0', FrontID=1, SessionID=865534192, OrderRef='           2', ExchangeID='SHFE', LimitPrice=52100.0, RequestID=65537, OrderSysID='     1036148')
+        req = ApiStruct.OrderAction(BrokerID=self.brokerID, InvestorID=self.userID, ActionFlag=b'0', OrderSysID=str(ordersysid).ljust(12))
         self.requestID += 1
         answer = TraderApi.ReqOrderAction(self, req, self.requestID)
         if answer == 0:
