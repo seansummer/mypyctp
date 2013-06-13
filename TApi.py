@@ -45,11 +45,9 @@ class MyTraderApi(TraderApi):
         print('OnHeartBeatWarning:', nTimeLapse)
 
     def OnRspUserLogin(self, pRspUserLogin, pRspInfo, nRequestID, bIsLast):
-        print('OnRspUserLogin:', pRspInfo)
+        print('OnRspUserLogin:', self.FindErrors(pRspInfo.ErrorID))
         if pRspInfo.ErrorID == 0: # Success
             print('GetTradingDay:', self.GetTradingDay())
-            #traderapi.ReqQryTradingAccount()
-            #self.SubscribeMarketData(self.instrumentIDs)
 
     def OnRspSubMarketData(self, pSpecificInstrument, pRspInfo, nRequestID, bIsLast):
         print('OnRspSubMarketData:', pRspInfo)
@@ -70,7 +68,7 @@ class MyTraderApi(TraderApi):
     def OnRspQryOrder(self, pOrder, pRspInfo, nRequestID, bIsLast):
         #print('OnRspQryOrder:', pOrder, pRspInfo)
         data = pOrder
-        print('合约：%s|前置：%s|会话：%s|报单参考：%s|交易所：%s|系统报单号：%s' % (data.InstrumentID,data.FrontID,data.SessionID,data.OrderRef,data.ExchangeID,data.OrderSysID))
+        print('合约：%s|前置：%s|会话：%s|报单参考：%s|交易所：%s|系统报单号：%s|报单状态：%s' % (data.InstrumentID,data.FrontID,data.SessionID,data.OrderRef,data.ExchangeID,data.OrderSysID,data.OrderStatus))
 
     def OnRspQryTradingAccount(self, pTradingAccount, pRspInfo, nRequestID, bIsLast):
         #print('OnRspQryTradingAccount:', pTradingAccount, pRspInfo)
@@ -81,7 +79,7 @@ class MyTraderApi(TraderApi):
         print('OnRspOrderInsert:', pInputOrder, pRspInfo)
 
     def OnErrRtnOrderInsert(self, pInputOrder, pRspInfo):
-        print('OnErrRtnOrderInsert:', pInputOrder, pRspInfo)
+        print('OnErrRtnOrderInsert:', pInputOrder, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspUserPasswordUpdate(self, pUserPasswordUpdate, pRspInfo, nRequestID, bIsLast):
         print('OnRspUserPasswordUpdate:', pUserPasswordUpdate, pRspInfo)
@@ -90,13 +88,13 @@ class MyTraderApi(TraderApi):
         print('OnRspTradingAccountPasswordUpdate:', pTradingAccountPasswordUpdate, pRspInfo)
 
     def OnRspOrderAction(self, pOrderAction, pRspInfo, nRequestID, bIsLast):
-        print('OnRspOrderAction:', pOrderAction, pRspInfo)
+        print('OnRspOrderAction:', pOrderAction, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspQueryMaxOrderVolume(self, pQueryMaxOrderVolume, pRspInfo, nRequestID, bIsLast):
         print('OnRspQueryMaxOrderVolume:', pQueryMaxOrderVolume, pRspInfo)
 
     def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast):
-        print('OnRspSettlementInfoConfirm:', pSettlementInfoConfirm, pRspInfo)
+        print('OnRspSettlementInfoConfirm:', pSettlementInfoConfirm, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspTransferBankToFuture(self, pTransferBankToFutureRsp, pRspInfo, nRequestID, bIsLast):
         print('OnRspTransferBankToFuture:', pTransferBankToFutureRsp, pRspInfo)
@@ -112,10 +110,9 @@ class MyTraderApi(TraderApi):
 
     def OnRspQryTrade(self, pTrade, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryTrade:', pTrade, pRspInfo)
-        self.FindErrors(pRspInfo.ErrorID)
 
     def OnRspQryInvestor(self, pInvestor, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryInvestor:', pInvestor, pRspInfo)
+        print('OnRspQryInvestor:', pInvestor, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspQryInvestorPosition(self, pInvestorPostion, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryInvestorPosition:', pInvestorPostion, pRspInfo)
@@ -128,24 +125,27 @@ class MyTraderApi(TraderApi):
 
     def OnRspQryDepthMarketData(self, pDepthMarketData, pRspInfo, nRequset, bIsLast):
         d = pDepthMarketData
+        for o in str(d).split(','):
+            print o            
         print('OnRspQryDepthMarketData:')
         print("合约:%s\n最新价:%.2f\n最高价:%.2f\n最低价:%.2f\n数量:%d\n最后修改时间:%s\n买价:%.2f\n买量:%d\n卖价:%.2f\n卖量:%d" % (d.InstrumentID,d.LastPrice,d.HighestPrice,d.LowestPrice,d.Volume,d.UpdateTime,d.BidPrice1,d.BidVolume1,d.AskPrice1,d.AskVolume1))
-        self.FindErrors(pRspInfo.ErrorID)
 
     def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequset, bIsLast):
         print('OnRspQrySettlementInfo:', pSettlementInfo, pRspInfo)
+        for o in str(pSettlementInfo).split(','):
+            print o
 
     def OnRspQryTransferBank(self, pTransferBank, pRspInfo, nRequset, bIsLast):
         print('OnRspQryTransferBank:', pTransferBank, pRspInfo)
 
     def OnRspQryInvestorPositionDetail(self, pInvestorPositionDetail, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryInvestorPositionDetail',pInvestorPositionDetail, pRspInfo)
+        print('OnRspQryInvestorPositionDetail',pInvestorPositionDetail, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspQryNotice(self, pNotice, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryNotice:', pNotice, pRspInfo)
 
     def OnRspQryInstrument(self, pInstrument, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQryInstrument:', pInstrument, pRspInfo)
+        print('OnRspQryInstrument:', pInstrument, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRtnTrade(self, pTrade):
         print('OnRtnTrade:', pTrade)
@@ -154,10 +154,10 @@ class MyTraderApi(TraderApi):
         print('OnRtnOrder:', pOrder)
 
     def OnErrRtnOrderAction(self, pOrderAction, pRspInfo):
-        print('OnErrRtnOrderAction:', pOrderAction, pRspInfo)
+        print('OnErrRtnOrderAction:', pOrderAction, self.FindErrors(pRspInfo.ErrorID))
         
     def OnRspQrySettlementInfoConfirm(self, pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast):
-        print('OnRspQrySettlementInfoConfirm:', pSettlementInfoConfirm, pRspInfo)
+        print('OnRspQrySettlementInfoConfirm:', pSettlementInfoConfirm, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspQryContractBank(self, pContractBank, pRspInfo, nRequestID, bIsLast):
         print('OnRspQryContractBank:', pContractBank, pRspInfo)
@@ -189,11 +189,11 @@ class MyTraderApi(TraderApi):
 
     def ReqOrderInsert(self):
         instrumentid = raw_input('请输入合约号:')
-        orderpricetype = raw_input('任意价1 限价2 最优价3 最新价4:')
+        #orderpricetype = raw_input('任意价1 限价2 最优价3 最新价4:')
         direction = raw_input('买1 卖2:')
         limitprice = input('价格：')
         volumetotaloriginal = raw_input('数量:')
-        req = ApiStruct.InputOrder(BrokerID=self.brokerID, InvestorID=self.userID, InstrumentID=instrumentid, UserID=self.userID, OrderPriceType=str(orderpricetype), Direction=str(direction), CombOffsetFlag='0', CombHedgeFlag='1', LimitPrice=float(limitprice), VolumeTotalOriginal=int(volumetotaloriginal), TimeCondition='3', VolumeCondition='1', MinVolume=0, ContingentCondition='1', StopPrice=0.0, ForceCloseReason='0', IsAutoSuspend=0 )
+        req = ApiStruct.InputOrder(BrokerID=self.brokerID, InvestorID=self.userID, InstrumentID=instrumentid, UserID=self.userID, OrderPriceType=str(2), Direction=str(direction), CombOffsetFlag='0', CombHedgeFlag='1', LimitPrice=float(limitprice), VolumeTotalOriginal=int(volumetotaloriginal), TimeCondition='3', VolumeCondition='1', MinVolume=0, ContingentCondition='1', StopPrice=0.0, ForceCloseReason='0', IsAutoSuspend=0 )
         self.requestID += 1
         TraderApi.ReqOrderInsert(self, req, self.requestID)
 
@@ -218,13 +218,21 @@ class MyTraderApi(TraderApi):
         
     def ReqOrderAction(self):
         ordersysid = raw_input("请输入系统报单号：")
-        req = ApiStruct.Order(BrokerID=self.brokerID,UserID=self.userID,OrderSysID=ordersysid)
+        req = ApiStruct.OrderAction(InstrumentID='cu1309', BrokerID=self.brokerID, InvestorID=self.userID, ActionFlag=b'0', FrontID=1, SessionID=865534192, OrderRef='1')
+        print req
         self.requestID += 1
         answer = TraderApi.ReqOrderAction(self, req, self.requestID)
         if answer == 0:
             print "撤单请求发送成功"
         pass
-        
+    
+    def ReqQrySettlementInfo(self):
+        req = ApiStruct.SettlementInfo(BrokerID=self.brokerID,UserID=self.userID)
+        self.requestID += 1
+        answer = TraderApi.ReqQrySettlementInfo(self, req, self.requestID)
+        if answer == 0:
+            print "结算查询发送成功"
+        pass
         
 
 

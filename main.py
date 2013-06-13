@@ -40,7 +40,7 @@ def connect():
     return traderapi
 
 def main():
-    menu = ['0 结算单确认','1 查询合约行情', '2 查询资金', '3 报单查询','4 成交查询', '5 持仓查询', '6 合约下单', '7 撤所有单','99 创建合约行情接收']
+    menu = ['0 结算单确认','1 查询合约行情', '2 查询资金', '3 报单查询','4 成交查询', '5 持仓查询', '6 合约下单', '7 撤所有单','8 结算单查询','99 创建合约行情接收']
     t = connect()
     menucomm = {'0':t.ReqSettlementInfoConfirm,
                 '1':t.ReqQryDepthMarketData,
@@ -50,17 +50,23 @@ def main():
                 '5':t.ReqQryInvestorPositionDetail,
                 '6':t.ReqOrderInsert,
                 '7':t.ReqOrderAction,
+                '8':t.ReqQrySettlementInfo,
                 #'99':MApi.mdconnect,
                 }
-    time.sleep(1)
+    time.sleep(3)
+    comm = ''
     while True:
-        for view in menu:
-            print view
-        comm = raw_input('请输入命令序号:')
+        comm = raw_input('请输入命令序号,输入m显示菜单:')
+        if str(comm) == 'm':
+            for view in menu:
+                print view
+        elif str(comm) == 'x':
+            print "退出程序"
+            break
         if str(comm) in menucomm.keys():
             menucomm[str(comm)]()
         else:
-            print '错误的命令序号!'
+            continue
         time.sleep(1)
 
 if __name__ == '__main__':
