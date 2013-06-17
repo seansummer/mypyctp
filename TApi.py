@@ -5,6 +5,15 @@ from ctp import ApiStruct, MdApi, TraderApi
 from xml.etree import ElementTree as ET
 
 class MyTraderApi(TraderApi):
+    
+    orderStatus = {'0':'全部成交',
+                   '1':'部分成交还在队列中',
+                   '2':'部分成交不在队列中',
+                   '3':'未成交还在队列中',
+                   '4':'未成交不在队列中',
+                   '5':'撤单',
+                   'a':'未知',
+                   'b':'尚未'}
     #初始化交易API
     def __init__(self, brokerID, userID, password):
         self.requestID = 0
@@ -67,7 +76,7 @@ class MyTraderApi(TraderApi):
     def OnRspQryOrder(self, pOrder, pRspInfo, nRequestID, bIsLast):
         #print('OnRspQryOrder:', pOrder, pRspInfo)
         data = pOrder
-        print '合约：%s|前置：%s|会话：%s|报单参考：%s|交易所：%s|系统报单号：%s|报单状态：%s' % (data.InstrumentID,data.FrontID,data.SessionID,data.OrderRef,data.ExchangeID,data.OrderSysID,data.OrderStatus)
+        print '合约：%s|前置：%s|会话：%s|交易所：%s|系统报单号：%s|报单状态：%s' % (data.InstrumentID,data.FrontID,data.SessionID,data.ExchangeID,data.OrderSysID,self.orderStatus[data.OrderStatus])
 
     def OnRspQryTradingAccount(self, pTradingAccount, pRspInfo, nRequestID, bIsLast):
         #print('OnRspQryTradingAccount:', pTradingAccount, pRspInfo)
@@ -108,7 +117,9 @@ class MyTraderApi(TraderApi):
         print 'OnRspTransferQryDetail:', pTransferQryDetailRsp, pRspInfo
 
     def OnRspQryTrade(self, pTrade, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspQryTrade:', pTrade, pRspInfo
+        #print 'OnRspQryTrade:', pTrade, pRspInfo
+        data = pTrade
+        print "合约：%s|交易所：%s|成交编号：%s|买卖：%s|系统编号：%s|成交类型：%s|成交价格：%s|数量：%s|成交时间：%s" % (data.InstrumentID,data.ExchangeID,data.TradeID,data.Direction,data.OrderSysID,data.OffsetFlag,data.Price,data.Volume,data.TradeTime)
 
     def OnRspQryInvestor(self, pInvestor, pRspInfo, nRequestID, bIsLast):
         print 'OnRspQryInvestor:', pInvestor, self.FindErrors(pRspInfo.ErrorID)

@@ -25,7 +25,7 @@ def main():
                 '8':t.ReqQrySettlementInfo,
                 #'99':MApi.mdconnect,
                 }
-    time.sleep(3)
+    time.sleep(5)
     comm = ''
     while True:
         comm = raw_input('请输入命令序号,输入m显示菜单:')
