@@ -77,16 +77,22 @@ class MyMdApi(MdApi):
     def OnRspUserLogout(self, pUserLogout, pRspInfo, nRequestID, bIsLast):
         logging.info('OnRspUserLogout:'+ str(pRspInfo))
 
+    def MdCheck(self, value):
+        if value < 1000000:
+            return value
+        else:
+            return 0
 #深度行情通知
     def OnRtnDepthMarketData(self, pDepthMarketData):
         data = pDepthMarketData
         #print('OnRspQryDepthMarketData:')
-        datas = "{0:s}|{1:.2f}|{2:.2f}|{3:.2f}|{4:d}|{5:s}|{6:.2f}|{7:d}|{8:.2f}|{9:d}".format(data.InstrumentID,data.LastPrice,data.HighestPrice,data.LowestPrice,data.Volume,data.UpdateTime,data.BidPrice1,data.BidVolume1,data.AskPrice1,data.AskVolume1)
+        datas = "{0:s}|{1:.2f}|{2:.2f}|{3:.2f}|{4:d}|{5:s}|{6:.2f}|{7:d}|{8:.2f}|{9:d}".format(data.InstrumentID,self.MdCheck(data.LastPrice),self.MdCheck(data.HighestPrice),self.MdCheck(data.LowestPrice),data.Volume,data.UpdateTime,self.MdCheck(data.BidPrice1),data.BidVolume1,self.MdCheck(data.AskPrice1),data.AskVolume1)
         #print("合约:%s\n最新价:%.2f\t最高价:%.2f\t最低价:%.2f\t数量:%d\t最后修改时间:%s\n买价:%.2f\t买量:%d\t卖价:%.2f\t卖量:%d" % (d.InstrumentID,d.LastPrice,d.HighestPrice,d.LowestPrice,d.Volume,d.UpdateTime,d.BidPrice1,d.BidVolume1,d.AskPrice1,d.AskVolume1))
         mdname = './log/' + time.strftime('%Y-%m-%d',time.localtime(time.time())) + 'md.txt'
         f = open(mdname,'a')
         f.write(str(datas)+'\n')
         f.close()
+        
         
 def mdconnect():
     config = ConfigParser.ConfigParser()
