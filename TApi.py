@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import hashlib, os, sys, tempfile, time
+import hashlib, os, sys, tempfile, time, logging, ConfigParser
 from ctp import ApiStruct, MdApi, TraderApi
 from xml.etree import ElementTree as ET
 
 class MyTraderApi(TraderApi):
-    
+    FORMAT= '%(name)s %(levelname)s %(asctime)s %(process)d %(processName)s %(thread)d %(threadName)s %(message)s'
+    logging.basicConfig(filename='./log/' + time.strftime('%Y-%m-%d',time.localtime(time.time())) + 'tradelog.log', filemode='a', level=logging.DEBUG, format=FORMAT)
     orderStatus = {'0':'全部成交',
                    '1':'部分成交还在队列中',
                    '2':'部分成交不在队列中',
@@ -32,7 +33,7 @@ class MyTraderApi(TraderApi):
         p = root.findall("error")
         for o in p:
             if o.attrib['value'] == str(value):
-                print o.attrib['prompt']
+                logging.error(o.attrib['prompt'])
 
     def RegisterFront(self, front):
         if isinstance(front, bytes):
@@ -41,33 +42,33 @@ class MyTraderApi(TraderApi):
             TraderApi.RegisterFront(self, front)
 
     def OnFrontConnected(self):
-        print('OnFrontConnected: Login...')
+        logging.info('OnFrontConnected: Login...')
         req = ApiStruct.ReqUserLogin(BrokerID=self.brokerID, UserID=self.userID, Password=self.password)
         self.requestID += 1
         self.ReqUserLogin(req, self.requestID)
 
     def OnFrontDisconnected(self, nReason):
-        print 'OnFrontDisconnected:', nReason
+        logging.info('OnFrontDisconnected:', nReason)
 
     def OnHeartBeatWarning(self, nTimeLapse):
-        print 'OnHeartBeatWarning:', nTimeLapse
+        logging.info('OnHeartBeatWarning:', nTimeLapse)
 
     def OnRspUserLogin(self, pRspUserLogin, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspUserLogin:', self.FindErrors(pRspInfo.ErrorID)
+        logging.info('OnRspUserLogin:', self.FindErrors(pRspInfo.ErrorID))
         if pRspInfo.ErrorID == 0: # Success
-            print 'GetTradingDay:', self.GetTradingDay()
+            logging.info('GetTradingDay:', self.GetTradingDay())
 
     def OnRspSubMarketData(self, pSpecificInstrument, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspSubMarketData:', pRspInfo
+        logging.info('OnRspSubMarketData:', pRspInfo)
 
     def OnRspUnSubMarketData(self, pSpecificInstrument, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspUnSubMarketData:', pRspInfo
+        logging.info('OnRspUnSubMarketData:', pRspInfo)
 
     def OnRspError(self, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspError:', pRspInfo
+        logging.error('OnRspError:', pRspInfo)
 
     def OnRspUserLogout(self, pUserLogout, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspUserLogout:', pRspInfo
+        logging.info('OnRspUserLogout:', pRspInfo)
 
     def OnRtnDepthMarketData(self, pDepthMarketData):
         d = pDepthMarketData
@@ -84,10 +85,10 @@ class MyTraderApi(TraderApi):
         print '投资者帐号:%s\n冻结的保证金:%.2f\n当前保证金总额:%.2f\n平仓盈亏:%.2f\n持仓盈亏:%.2f\n可用资金:%.2f\n可取资金:%.2f\n交易日:%s' % (d.AccountID, d.FrozenMargin, d.CurrMargin, d.CloseProfit, d.PositionProfit, d.Available, d.WithdrawQuota, d.TradingDay)
 
     def OnRspOrderInsert(self, pInputOrder, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspOrderInsert:', pInputOrder, pRspInfo
+        logging.info('OnRspOrderInsert:', pInputOrder, pRspInfo)
 
     def OnErrRtnOrderInsert(self, pInputOrder, pRspInfo):
-        print 'OnErrRtnOrderInsert:', pInputOrder, self.FindErrors(pRspInfo.ErrorID)
+        logging.error('OnErrRtnOrderInsert:', pInputOrder, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspUserPasswordUpdate(self, pUserPasswordUpdate, pRspInfo, nRequestID, bIsLast):
         print 'OnRspUserPasswordUpdate:', pUserPasswordUpdate, pRspInfo
@@ -122,7 +123,7 @@ class MyTraderApi(TraderApi):
         print "合约：%s|交易所：%s|成交编号：%s|买卖：%s|系统编号：%s|成交类型：%s|成交价格：%s|数量：%s|成交时间：%s" % (data.InstrumentID,data.ExchangeID,data.TradeID,data.Direction,data.OrderSysID,data.OffsetFlag,data.Price,data.Volume,data.TradeTime)
 
     def OnRspQryInvestor(self, pInvestor, pRspInfo, nRequestID, bIsLast):
-        print 'OnRspQryInvestor:', pInvestor, self.FindErrors(pRspInfo.ErrorID)
+        logging.info('OnRspQryInvestor:', pInvestor, self.FindErrors(pRspInfo.ErrorID))
 
     def OnRspQryInvestorPosition(self, pInvestorPostion, pRspInfo, nRequestID, bIsLast):
         #print 'OnRspQryInvestorPosition:', pInvestorPostion, pRspInfo
@@ -252,7 +253,15 @@ class MyTraderApi(TraderApi):
             print "结算查询发送成功"
         pass
         
-
+def tconnect():
+    config = ConfigParser.ConfigParser()
+    config.readfp(open('./config/config.cfg'))
+    traderapi = TraderApi(config.get('ACCOUNT', 'BrokerID'), config.get('ACCOUNT', 'UserID'), config.get('ACCOUNT', 'Password'))
+    traderapi.SubscribePublicTopic(0)
+    traderapi.SubscribePrivateTopic(0)
+    traderapi.RegisterFront(config.get('SERVER', 'TServerIP'))
+    traderapi.Init()
+    return traderapi
 
 
 if __name__ == '__main__':
