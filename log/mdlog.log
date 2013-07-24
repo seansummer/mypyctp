@@ -1,0 +1,77 @@
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:OnFrontConnected: Connect...
+INFO:root:OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+INFO:root:GetTradingDay:
+INFO:root:OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:24:46,979 OnFrontConnected: Connect...
+root INFO 2013-07-19 11:24:47,539 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:24:47,539 GetTradingDay:
+root INFO 2013-07-19 11:24:47,684 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:28:33,424 1374204513.425000 OnFrontConnected: Connect...
+root INFO 2013-07-19 11:28:33,559 1374204513.560000 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:28:33,559 1374204513.560000 GetTradingDay:
+root INFO 2013-07-19 11:28:33,691 1374204513.692000 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:30:17,473 1374204617.473000 2957 OnFrontConnected: Connect...
+root INFO 2013-07-19 11:30:17,609 1374204617.610000 3093 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:30:17,609 1374204617.610000 3093 GetTradingDay:
+root INFO 2013-07-19 11:30:17,740 1374204617.741000 3224 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:34:00,763 1374204840.764000 2714 763 OnFrontConnected: Connect...
+root INFO 2013-07-19 11:34:00,943 1374204840.943000 2894 943 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:34:00,943 1374204840.943000 2894 943 GetTradingDay:
+root INFO 2013-07-19 11:34:01,111 1374204841.111000 3062 111 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:56:11,098 1374206171.099000 20068 98 OnFrontConnected: Connect...
+root INFO 2013-07-19 11:56:11,213 1374206171.213000 20182 213 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 11:56:11,213 1374206171.214000 20183 213 GetTradingDay:
+root INFO 2013-07-19 11:56:11,332 1374206171.332000 20301 332 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:36:33,746 1374208593.746000 4936 746 20552 MainProcess 25764 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:36:33,881 1374208593.882000 5072 881 20552 MainProcess 25764 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:36:33,882 1374208593.883000 5072 882 20552 MainProcess 25764 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:36:34,013 1374208594.014000 5203 13 20552 MainProcess 25764 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:47:14,601 24104 MainProcess 26276 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:47:14,736 24104 MainProcess 26276 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:47:14,736 24104 MainProcess 26276 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:47:14,868 24104 MainProcess 26276 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:50:21,397 25784 MainProcess 25556 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:50:21,543 25784 MainProcess 25556 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:50:21,543 25784 MainProcess 25556 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:50:21,684 25784 MainProcess 25556 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:51:28,128 26616 MainProcess 25640 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:51:28,272 26616 MainProcess 25640 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:51:28,272 26616 MainProcess 25640 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:51:28,407 26616 MainProcess 25640 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:54:53,727 25404 MainProcess 26532 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:54:53,869 25404 MainProcess 26532 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:54:53,869 25404 MainProcess 26532 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:54:54,006 25404 MainProcess 26532 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:57:14,956 26488 MainProcess 24824 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 12:57:15,480 26488 MainProcess 24824 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 12:57:15,480 26488 MainProcess 24824 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 12:57:15,611 26488 MainProcess 24824 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 13:05:00,104 26544 MainProcess 26616 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 13:05:00,239 26544 MainProcess 26616 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 13:05:00,239 26544 MainProcess 26616 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 13:05:00,368 26544 MainProcess 26616 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 13:06:25,660 25528 MainProcess 25084 Dummy-1 OnFrontConnected: Connect...
+root INFO 2013-07-19 13:06:25,798 25528 MainProcess 25084 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
+root INFO 2013-07-19 13:06:25,799 25528 MainProcess 25084 Dummy-1 GetTradingDay:
+root INFO 2013-07-19 13:06:25,931 25528 MainProcess 25084 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
