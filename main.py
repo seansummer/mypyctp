@@ -12,7 +12,7 @@ def connect():
     return traderapi
 
 def main():
-    menu = ['0 结算单确认','1 查询合约行情', '2 查询资金', '3 报单查询','4 成交查询', '5 持仓查询', '6 合约下单', '7 撤所有单','8 结算单查询','99 创建合约行情接收']
+    menu = ['0 结算单确认','1 查询合约行情', '2 查询资金', '3 报单查询','4 成交查询', '5 持仓明细查询', '6 合约下单', '7 撤所有单','8 结算单查询','9 持仓查询','99 创建合约行情接收']
     t = connect()
     menucomm = {'0':t.ReqSettlementInfoConfirm,
                 '1':t.ReqQryDepthMarketData,
@@ -23,6 +23,7 @@ def main():
                 '6':t.ReqOrderInsert,
                 '7':t.ReqOrderAction,
                 '8':t.ReqQrySettlementInfo,
+                '9':t.ReqQryInvestorPosition,
                 #'99':MApi.mdconnect,
                 }
     time.sleep(5)

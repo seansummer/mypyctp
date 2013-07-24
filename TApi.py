@@ -21,7 +21,8 @@ class MyTraderApi(TraderApi):
         self.brokerID = brokerID
         self.userID = userID
         self.password = password
-        self.instrumentIDs = 'cu1309'
+        self.instrumentIDs = 'cu1311'
+        self.investorPosition = []
         self.Create()
 
     def Create(self):
@@ -48,27 +49,27 @@ class MyTraderApi(TraderApi):
         self.ReqUserLogin(req, self.requestID)
 
     def OnFrontDisconnected(self, nReason):
-        logging.info('OnFrontDisconnected:', nReason)
+        logging.info('OnFrontDisconnected:' + str(nReason))
 
     def OnHeartBeatWarning(self, nTimeLapse):
-        logging.info('OnHeartBeatWarning:', nTimeLapse)
+        logging.info('OnHeartBeatWarning:' + str(nTimeLapse))
 
     def OnRspUserLogin(self, pRspUserLogin, pRspInfo, nRequestID, bIsLast):
-        logging.info('OnRspUserLogin:', self.FindErrors(pRspInfo.ErrorID))
+        logging.info('OnRspUserLogin:' + str(self.FindErrors(pRspInfo.ErrorID)))
         if pRspInfo.ErrorID == 0: # Success
-            logging.info('GetTradingDay:', self.GetTradingDay())
+            logging.info('GetTradingDay:' + str(self.GetTradingDay()))
 
     def OnRspSubMarketData(self, pSpecificInstrument, pRspInfo, nRequestID, bIsLast):
-        logging.info('OnRspSubMarketData:', pRspInfo)
+        logging.info('OnRspSubMarketData:'+ str(pRspInfo))
 
     def OnRspUnSubMarketData(self, pSpecificInstrument, pRspInfo, nRequestID, bIsLast):
-        logging.info('OnRspUnSubMarketData:', pRspInfo)
+        logging.info('OnRspUnSubMarketData:' + str(pRspInfo))
 
     def OnRspError(self, pRspInfo, nRequestID, bIsLast):
-        logging.error('OnRspError:', pRspInfo)
+        logging.error('OnRspError:' + str(pRspInfo))
 
     def OnRspUserLogout(self, pUserLogout, pRspInfo, nRequestID, bIsLast):
-        logging.info('OnRspUserLogout:', pRspInfo)
+        logging.info('OnRspUserLogout:' + str(pRspInfo))
 
     def OnRtnDepthMarketData(self, pDepthMarketData):
         d = pDepthMarketData
@@ -128,8 +129,13 @@ class MyTraderApi(TraderApi):
     def OnRspQryInvestorPosition(self, pInvestorPostion, pRspInfo, nRequestID, bIsLast):
         #print 'OnRspQryInvestorPosition:', pInvestorPostion, pRspInfo
         data = pInvestorPostion
-        print '成交编号：%s|合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s|平仓盈亏：%s|交易所：%s' % (data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.Margin, data.PositionProfitByDate, data.CloseProfitByDate, data.ExchangeID)
-
+        #print 'OnRspQryInvestorPostion', data
+        #print '合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s' % (data.InstrumentID, data.PosiDirection, data.OpenVolume, data.OpenAmount, data.UseMargin, data.PositionProfit)
+        #print data
+        if bIsLast == 0:
+            self.investorPosition = []
+        self.investorPosition.append([data.InstrumentID, data.PosiDirection, data.OpenVolume, data.OpenAmount, data.UseMargin, data.PositionProfit] )
+        
     def OnRspQryTradingCode(self, pTradingCode, pRspInfo, nReqestID, bIsLast):
         print 'OnRspQryTradingCode:', pTradingCode, pRspInfo
 
@@ -154,7 +160,8 @@ class MyTraderApi(TraderApi):
     def OnRspQryInvestorPositionDetail(self, pInvestorPositionDetail, pRspInfo, nRequestID, bIsLast):
         #print 'OnRspQryInvestorPositionDetail',pInvestorPositionDetail, pRspInfo
         data = pInvestorPositionDetail
-        print '成交编号：%s|合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s|平仓盈亏：%s|交易所：%s' % (data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.Margin, data.PositionProfitByDate, data.CloseProfitByDate, data.ExchangeID)
+        #print data
+        print '成交编号：%s|合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s|平仓盈亏：%s|交易所：%s' % (data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.Margin, data.PositionProfitByTrade, data.CloseProfitByDate, data.ExchangeID)
 
     def OnRspQryNotice(self, pNotice, pRspInfo, nRequestID, bIsLast):
         print 'OnRspQryNotice:', pNotice, pRspInfo
@@ -191,12 +198,18 @@ class MyTraderApi(TraderApi):
         self.requestID += 1
         answer = TraderApi.ReqQryDepthMarketData(self, req, self.requestID)
         print 'ReqQryDepthMarketData...' if answer ==0 else 'error on ReqQryDepthMarketData'
+        
+    def ReqQryInvestorPosition(self):
+        req = ApiStruct.QryInvestorPosition(BrokerID=self.brokerID, InvestorID=self.userID)
+        self.requestID += 1
+        answer = TraderApi.ReqQryInvestorPosition(self, req, self.requestID)
+        #print 'ReqQryInvestorPosition...' if answer ==0 else 'error on ReqQryInvestorPosition'
 
     def ReqQryInvestorPositionDetail(self):
         req = ApiStruct.QryInvestorPositionDetail(BrokerID=self.brokerID, InvestorID=self.userID)
         self.requestID += 1
         answer = TraderApi.ReqQryInvestorPositionDetail(self, req, self.requestID)
-        print 'ReqQryInvestorPositionDetail...' if answer ==0 else 'error on ReqQryInvestorPositionDetail'
+        #print 'ReqQryInvestorPositionDetail...' if answer ==0 else 'error on ReqQryInvestorPositionDetail'
 
     def ReqQryTradingAccount(self):
         #print self.brokerID, self.userID
@@ -204,13 +217,13 @@ class MyTraderApi(TraderApi):
         self.requestID += 1
         TraderApi.ReqQryTradingAccount(self, req, self.requestID)
 
-    def ReqOrderInsert(self):
-        instrumentid = raw_input('请输入合约号:')
+    def ReqOrderInsert(self, instrumentid, comboffsetflag, direction, limitprice, volumetotaloriginal = 1):
+        #instrumentid = raw_input('请输入合约号:')
         #orderpricetype = raw_input('任意价1 限价2 最优价3 最新价4:')
-        comboffsetflag = raw_input('开仓0平仓1平今3平昨4：')
-        direction = raw_input('买0 卖1:')
-        limitprice = input('价格：')
-        volumetotaloriginal = raw_input('数量:')
+        #comboffsetflag = raw_input('开仓0平仓1平今3平昨4：')
+        #direction = raw_input('买0 卖1:')
+        #limitprice = input('价格：')
+        #volumetotaloriginal = raw_input('数量:')
         req = ApiStruct.InputOrder(BrokerID=self.brokerID, InvestorID=self.userID, InstrumentID=instrumentid, UserID=self.userID, OrderPriceType=str(2), Direction=str(direction), CombOffsetFlag=str(comboffsetflag), CombHedgeFlag='1', LimitPrice=float(limitprice), VolumeTotalOriginal=int(volumetotaloriginal), TimeCondition='3', VolumeCondition='1', MinVolume=0, ContingentCondition='1', StopPrice=0.0, ForceCloseReason='0', IsAutoSuspend=0 )
         self.requestID += 1
         TraderApi.ReqOrderInsert(self, req, self.requestID)
