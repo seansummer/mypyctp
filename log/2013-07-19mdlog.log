@@ -1,4 +1,0 @@
-root INFO 2013-07-19 13:09:56,091 26272 MainProcess 26396 Dummy-1 OnFrontConnected: Connect...
-root INFO 2013-07-19 13:09:56,227 26272 MainProcess 26396 Dummy-1 OnRspUserLogin:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
-root INFO 2013-07-19 13:09:56,229 26272 MainProcess 26396 Dummy-1 GetTradingDay:
-root INFO 2013-07-19 13:09:56,362 26272 MainProcess 26396 Dummy-1 OnRspSubMarketData:<RspInfo: ErrorID=0, ErrorMsg='No Error'>
