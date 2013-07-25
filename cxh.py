@@ -3,16 +3,6 @@
 import time, ConfigParser, logging, MApi, linecache, TApi
 from ctp import ApiStruct, MdApi, TraderApi   
 
-def tconnect():
-    config = ConfigParser.ConfigParser()
-    config.readfp(open('./config/config.cfg'))
-    traderapi = TApi.MyTraderApi(config.get('ACCOUNT', 'BrokerID'), config.get('ACCOUNT', 'UserID'), config.get('ACCOUNT', 'Password'))
-    traderapi.SubscribePublicTopic(0)
-    traderapi.SubscribePrivateTopic(0)
-    traderapi.RegisterFront(config.get('SERVER', 'TServerIP'))
-    traderapi.Init()
-    return traderapi
-
 def getlastmd():
     filename = './data/' + time.strftime('%Y-%m-%d',time.localtime(time.time())) + 'cu1311' + '.txt'
     with open(filename, 'r') as f:
@@ -33,23 +23,28 @@ def cxhactive(checknum, price):
 def main():
     preprice = 0
     checknum = 0
-    t = tconnect()
+    pretime = ''
+    t = TApi.tconnect()
+    time.sleep(3)
+    t.ReqSettlementInfoConfirm()
     while True:
         md = getlastmd()
         price = md.split('|')[1]
-        if preprice < price:
-            checknum = checknum + 1
-        elif preprice > price:
-            checknum = checknum - 1
-        else:
-            pass
-        preprice = price
-        print price,checknum
-        if checknum > 2:
-            t.ReqOrderInsert('cu1311', 0, 0, price, 1)
-        elif checknum < -1:
-            t.ReqOrderInsert('cu1311', 0, 1, price, 1)
-        checknum = cxhactive(checknum, price)
+        if md.split('|')[5] + md.split('|')[6] <> pretime:
+            if preprice < price:
+                checknum = checknum + 1
+            elif preprice > price:
+                checknum = checknum - 1
+            else:
+                pass
+            preprice = price
+            print price,checknum,pretime
+            if checknum > 2:
+                t.ReqOrderInsert('cu1311', 0, 1, price, 1)
+            elif checknum < -2:
+                t.ReqOrderInsert('cu1311', 0, 0, price, 1)
+            checknum = cxhactive(checknum, price)
+        pretime = md.split('|')[5] + md.split('|')[6]
         time.sleep(0.5)
 
 if __name__ == '__main__':
