@@ -13,13 +13,15 @@ def main():
     while True:
         t.qryOrder = []
         t.ReqQryOrder()
-        time.sleep(10)
+        time.sleep(5)
+        nowtime = time.strftime("%H:%M:%S", time.localtime(time.time()))
         if t.qryOrder <> []:
             #print t.qryOrder
-            nowtime = time.strftime("%H:%M:%S", time.localtime(time.time()))
             for v in t.qryOrder:
                 if timedelay(v[-1], nowtime) > 5:
                     t.ReqOrderAction(v[4], v[3])
+        else:
+            print "无须撤单", str(nowtime)
         time.sleep(0.5)
                 
 

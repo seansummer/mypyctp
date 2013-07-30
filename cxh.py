@@ -12,11 +12,11 @@ def getlastmd():
         return last
         
 def cxhactive(checknum, price):
-    if checknum > 2:
-        print "做多！"
+    if checknum > 3:
+        print "反向做空！"
         checknum = 1
-    elif checknum < -1:
-        print "做空"
+    elif checknum < -2:
+        print "反向做多！"
         checknum = 1
     return checknum
         
@@ -39,7 +39,7 @@ def main():
                 pass
             preprice = price
             print price,checknum,pretime
-            if checknum > 2:
+            if checknum > 3:
                 t.ReqOrderInsert('cu1311', 0, 1, price, 1)
             elif checknum < -2:
                 t.ReqOrderInsert('cu1311', 0, 0, price, 1)

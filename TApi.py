@@ -23,6 +23,7 @@ class MyTraderApi(TraderApi):
         self.password = password
         self.instrumentIDs = 'cu1311'
         self.investorPosition = []
+        self.investorPositionDetail = []
         self.qryOrder = []
         self.Create()
 
@@ -142,7 +143,7 @@ class MyTraderApi(TraderApi):
             print '没有持仓'
         else:
             #print data
-            self.investorPosition.append([data.InstrumentID, data.PosiDirection, data.OpenVolume, data.OpenAmount, data.UseMargin, data.PositionProfit] )
+            self.investorPosition.append([data.InstrumentID, data.PosiDirection, data.Position, data.OpenAmount, data.UseMargin, data.PositionProfit] )
         
     def OnRspQryTradingCode(self, pTradingCode, pRspInfo, nReqestID, bIsLast):
         print 'OnRspQryTradingCode:', pTradingCode, pRspInfo
@@ -168,9 +169,13 @@ class MyTraderApi(TraderApi):
     def OnRspQryInvestorPositionDetail(self, pInvestorPositionDetail, pRspInfo, nRequestID, bIsLast):
         #print 'OnRspQryInvestorPositionDetail',pInvestorPositionDetail, pRspInfo
         data = pInvestorPositionDetail
+        if data == None:
+            print '没有持仓'
+        elif data.Volume > 0:
         #print data
-        print '成交编号：%s|合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s|平仓盈亏：%s|交易所：%s' % (data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.Margin, data.PositionProfitByTrade, data.CloseProfitByDate, data.ExchangeID)
-
+        #print '成交编号：%s|合约：%s|买卖：%s|手数：%s|开仓价：%s|保证金：%s|持仓盈亏：%s|平仓盈亏：%s|交易所：%s' % (data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.Margin, data.PositionProfitByTrade, data.CloseProfitByDate, data.ExchangeID)
+            self.investorPositionDetail.append([data.TradeID, data.InstrumentID, data.Direction, data.Volume, data.OpenPrice, data.ExchangeID])
+        
     def OnRspQryNotice(self, pNotice, pRspInfo, nRequestID, bIsLast):
         print 'OnRspQryNotice:', pNotice, pRspInfo
 
@@ -220,7 +225,7 @@ class MyTraderApi(TraderApi):
     def ReqQryInvestorPositionDetail(self):
         req = ApiStruct.QryInvestorPositionDetail(BrokerID=self.brokerID, InvestorID=self.userID)
         self.requestID += 1
-        answer = TraderApi.ReqQryInvestorPositionDetail(self, req, self.requestID)
+        TraderApi.ReqQryInvestorPositionDetail(self, req, self.requestID)
         #print 'ReqQryInvestorPositionDetail...' if answer ==0 else 'error on ReqQryInvestorPositionDetail'
 
     def ReqQryTradingAccount(self):
