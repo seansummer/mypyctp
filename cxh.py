@@ -4,7 +4,9 @@ import time, ConfigParser, logging, MApi, linecache, TApi
 from ctp import ApiStruct, MdApi, TraderApi   
 
 def getlastmd():
-    filename = './data/' + time.strftime('%Y-%m-%d',time.localtime(time.time())) + 'cu1311' + '.txt'
+    config = ConfigParser.ConfigParser()
+    config.readfp(open('./config/config.cfg'))
+    filename = './data/' + time.strftime('%Y-%m-%d',time.localtime(time.time())) + config.get('ACCOUNT', 'CXHInstrument') + '.txt'
     with open(filename, 'r') as f:
         linenum = len(f.readlines())
         last = linecache.getline(filename, linenum)
